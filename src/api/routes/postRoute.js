@@ -11,5 +11,8 @@ module.exports = (server) => {
     server.route("/posts/:postId")
     .put(postController.updatePost);
 
+    server.route("/posts/:postId")
+    .get(postController.getPostById);
+
 
 }
