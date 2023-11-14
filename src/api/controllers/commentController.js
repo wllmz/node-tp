@@ -1,5 +1,6 @@
 const Comment = require("../models/commentModel");
 
+
 exports.listAllComments = async (req, res) => {
     try {
         const postId = req.params.postId;
