@@ -1,20 +1,6 @@
 const Post = require("../models/postModel");
 
 exports.listAllPosts = async(req, res) => {
-    /* ES5
-    Post.find({}, (error, posts) => {
-            if(error) {
-                res.status(500);
-                console.log(error);
-                res.json({message: "Erreur serveur"});
-            } else {
-                res.status(200);
-                res.json(posts);
-            }
-        })
-    */
-    
-    // ES6
     try {
         const posts = await Post.find({});
         res.status(200);
