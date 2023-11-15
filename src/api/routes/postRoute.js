@@ -1,14 +1,16 @@
 module.exports = (server) => {
     const postController = require("../controllers/postController");
+    const jwtverifytoken = require("../middleware/jwtMiddleware");
+    const { requireAdminRole } = require("../middleware/authJwt");
     
     server.route("/posts")
-    .get(postController.listAllPosts)
-    .post(postController.createAPost);
+    .get(jwtverifytoken.verifyToken, postController.listAllPosts)
+    .post(jwtverifytoken.verifyToken,requireAdminRole, postController.createAPost);
 
     server.route("/posts/:postId")
-    .delete(postController.deletePost)
-    .put(postController.updatePost)
-    .get(postController.getPostById);
+    .delete(jwtverifytoken.verifyToken,requireAdminRole, postController.deletePost)
+    .put(jwtverifytoken.verifyToken,requireAdminRole, postController.updatePost)
+    .get(jwtverifytoken.verifyToken,requireAdminRole, postController.getPostById);
 
 
 }
