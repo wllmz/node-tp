@@ -17,6 +17,10 @@ postRoute(server);
 const commentRoute = require("./api/routes/commentRoute");
 commentRoute(server);
 
+const userRoute = require("./api/routes/userRoute");
+userRoute(server);
+
+
 
 server.listen(port, hostname, () => {
     console.log(`Example app listening on port ${port}`)

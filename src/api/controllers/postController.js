@@ -1,4 +1,5 @@
 const Post = require("../models/postModel");
+const textprovider = require("../provider/testApiProvider");
 
 exports.listAllPosts = async(req, res) => {
     try {
@@ -14,16 +15,35 @@ exports.listAllPosts = async(req, res) => {
 }
 
 exports.createAPost = async (req, res) => {
-    const newPost = new Post(req.body);
     try {
+        // Valider les données de la requête ici si nécessaire
+
+        const newPost = new Post(req.body);
+
+        // Utiliser directement await pour obtenir le texte aléatoire
+        if (!newPost.content) {
+            newPost.content = await textprovider.getRandomText();
+        }
+
         const post = await newPost.save();
-        res.status(201);
-        res.json(post);
+        
+        // Renvoyer une réponse de succès avec le post créé
+        res.status(201).json(post);
     } catch (error) {
-        res.status(500);
-        console.log(error);
-        res.json({ message: "Erreur serveur." })
+        // Gérer les erreurs survenues lors de la création du post
+        res.status(500).send({ message: 'Error creating post' });
     }
+
+
+    // try {
+    //     const post = await newPost.save();
+    //     res.status(201);
+    //     res.json(post);
+    // } catch (error) {
+    //     res.status(500);
+    //     console.log(error);
+    //     res.json({ message: "Erreur serveur." })
+    // }
 }
 
 exports.deletePost = async (req, res) => {
