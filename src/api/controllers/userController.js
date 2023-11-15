@@ -1,41 +1,52 @@
 const User = require("../models/userModel");
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 
 exports.register = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "L'email est déjà utilisé" });
-        }
-        const newUser = new User({
-            email,
-            password,
-        });
-        await newUser.save();
+  try {
+    const { email, password, role } = req.body;
+    const newUser = new User({
+      email,
+      password,
+      role,
+    });
+    await newUser.save();
 
-        res.status(201).json({ message: "Utilisateur enregistré avec succès" });
-    } catch (error) {
-        res.status(500).json({ message: "Erreur lors de l'enregistrement de l'utilisateur" });
-    }
+    res.status(201).json({ message: "Utilisateur enregistré avec succès" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erreur lors de l'enregistrement de l'utilisateur" });
+  }
 };
 
 
+exports.userLogin = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
 
-exports.signin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: "Utilisateur non trouvé" });
-        }
-
-        if (user.password !== password) {
-            return res.status(401).json({ message: "Mot de passe incorrect" });
-        }
-
-        res.status(200).json({ message: "Connexion réussie", user });
-    } catch (error) {
-        res.status(500).json({ message: "Erreur serveur" });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
     }
+    if (user.email === req.body.email && user.password === req.body.password) {
+      const userData = {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+      };
+      const token = await jwt.sign(
+        userData,
+        process.env.JWT_KEY,
+        { expiresIn:  "30 days" }
+      );
+      res.status(200).json({token});
+    }else {
+        res.status(401).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Une erreur s'est produite lors du traitement" });
+  }
 };

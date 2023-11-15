@@ -34,16 +34,6 @@ exports.createAPost = async (req, res) => {
         res.status(500).send({ message: 'Error creating post' });
     }
 
-
-    // try {
-    //     const post = await newPost.save();
-    //     res.status(201);
-    //     res.json(post);
-    // } catch (error) {
-    //     res.status(500);
-    //     console.log(error);
-    //     res.json({ message: "Erreur serveur." })
-    // }
 }
 
 exports.deletePost = async (req, res) => {
