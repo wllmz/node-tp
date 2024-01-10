@@ -15,10 +15,6 @@ module.exports = (server) => {
      *         application/json:
      *           schema:
      *             type: object
-     *             required:
-     *               - username
-     *               - email
-     *               - password
      *             properties:
      *               username:
      *                 type: string
