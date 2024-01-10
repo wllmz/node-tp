@@ -50,3 +50,16 @@ exports.userLogin = async (req, res) => {
     res.status(500).json({ message: "Une erreur s'est produite lors du traitement" });
   }
 };
+
+exports.Alluser = async(req, res) => {
+  try {
+      const posts = await User.find({});
+      res.status(200);
+      res.json(posts);
+
+  } catch (error) {
+      res.status(500);
+      console.log(error);
+      res.json({ message: "Erreur serveur." })
+  }
+}
