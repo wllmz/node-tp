@@ -63,3 +63,5 @@ userRoute(server);
 server.listen(port, hostname, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+module.exports = server;

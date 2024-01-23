@@ -18,7 +18,7 @@ module.exports = (server) => {
      *         description: Non autorisé
      */
     server.route("/posts")
-        .get(jwtverifytoken.verifyToken, postController.listAllPosts)
+        .get(postController.listAllPosts)
 
     /**
      * @swagger
